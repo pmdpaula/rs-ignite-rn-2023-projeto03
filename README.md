@@ -143,7 +143,10 @@ npx expo install expo-image-picker
 npx expo install expo-file-system
 ```
 
-
+[Controle e validação de formulários - React Hook Form](https://react-hook-form.com/get-started/)
+```bash
+yarn add react-hook-form
+```
 
 
 

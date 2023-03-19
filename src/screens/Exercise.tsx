@@ -47,6 +47,7 @@ export const Exercise = () => {
         >
           <Heading
             color="gray.100"
+            fontFamily="heading"
             fontSize="lg"
             flexShrink={1}
           >

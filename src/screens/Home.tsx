@@ -65,6 +65,7 @@ export const Home = () => {
         >
           <Heading
             color="gray.200"
+            fontFamily="heading"
             fontSize="md"
             fontWeight="bold"
           >

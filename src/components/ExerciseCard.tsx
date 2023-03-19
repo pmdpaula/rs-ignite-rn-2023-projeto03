@@ -36,6 +36,7 @@ export const ExerciseCard = ({ title, ...rest }: ExerciseCardProps) => {
           overflow="hidden"
         >
           <Heading
+            fontFamily="heading"
             fontSize="lg"
             color="white"
           >

@@ -1,4 +1,4 @@
-import { Center, Heading, VStack } from 'native-base';
+import { Center, Heading } from 'native-base';
 
 type ScreenHeaderProps = {
   title: string;
@@ -12,6 +12,7 @@ export const ScreenHeader = ({ title }: ScreenHeaderProps) => {
       pt={16}
     >
       <Heading
+        fontFamily="heading"
         color="gray.100"
         fontSize="xl"
       >

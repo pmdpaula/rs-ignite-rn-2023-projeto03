@@ -32,6 +32,7 @@ export const HomeHeader = () => {
         <Heading
           color="gray.100"
           fontSize="lg"
+          fontFamily="heading"
         >
           Pedro
         </Heading>

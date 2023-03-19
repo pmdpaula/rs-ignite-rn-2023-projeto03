@@ -21,10 +21,10 @@ export const HistoryCard = ({ title }: HistoryCardProps) => {
         flex={1}
       >
         <Heading
+          fontFamily="heading"
           color="white"
           fontSize="md"
           textTransform="capitalize"
-          fontFamily="heading"
           numberOfLines={1}
         >
           {title}

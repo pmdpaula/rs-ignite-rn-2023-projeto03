@@ -40,6 +40,7 @@ export const History = () => {
         renderSectionHeader={({ section: { title } }) => (
           <Heading
             color="gray.200"
+            fontFamily="heading"
             fontSize="md"
             // fontWeight="bold"
             mt={10}

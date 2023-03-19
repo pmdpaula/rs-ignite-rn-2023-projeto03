@@ -3,10 +3,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {
   // Alert,
   Center,
-  CloseIcon,
-  HStack,
   Heading,
-  IconButton,
   ScrollView,
   Skeleton,
   Text,
@@ -16,7 +13,7 @@ import {
 
 import { useState } from 'react';
 
-import { Alert, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
@@ -124,6 +121,7 @@ export const Profile = () => {
 
           <Heading
             color="gray.200"
+            fontFamily="heading"
             fontSize="md"
             mt={12}
             mb={2}
