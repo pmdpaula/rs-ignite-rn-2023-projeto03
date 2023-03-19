@@ -31,13 +31,6 @@ const signUpSchema = yup
 
 type FormDataProps = yup.InferType<typeof signUpSchema>;
 
-// type FormDataProps = {
-//   name: string;
-//   email: string;
-//   password: string;
-//   passwordConfirm: string;
-// };
-
 export const SignUp = () => {
   const {
     control,
