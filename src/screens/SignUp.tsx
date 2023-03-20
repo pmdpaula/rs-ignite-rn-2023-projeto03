@@ -65,7 +65,7 @@ export const SignUp = () => {
       );
     } catch (error) {
       const isAppError = error instanceof AppError;
-      const title = !isAppError
+      const title = isAppError
         ? error.message
         : 'Não foi possível criar a conta. Tente novamente mais tarde.';
 
