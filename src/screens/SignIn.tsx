@@ -1,9 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAuth } from '@hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
-import { Center, Heading, Image, ScrollView, Text, VStack } from 'native-base';
+import { AppError } from '@utils/AppError';
+import {
+  Center,
+  Heading,
+  Image,
+  ScrollView,
+  Text,
+  VStack,
+  useToast,
+} from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+
+import { useState } from 'react';
 
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
@@ -28,6 +40,10 @@ const signInSchema = yup
 type FormDataProps = yup.InferType<typeof signInSchema>;
 
 export const SignIn = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { signIn } = useAuth();
+
   const {
     control,
     handleSubmit,
@@ -37,12 +53,31 @@ export const SignIn = () => {
   });
 
   const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
+  const toast = useToast();
 
-  function handleSignIn(formData: FormDataProps) {
-    console.log(
-      '🚀 ~ file: SignUp.tsx:23 ~ handleSignUp ~ formData:',
-      formData,
-    );
+  async function handleSignIn({ email, password }: FormDataProps) {
+    setIsLoading(true);
+
+    try {
+      await signIn(email, password);
+      // Não setams o isLoading para false quando a requisição dá certo, pq ao fazer isto,
+      // podemos receber um erro de que o componente já foi desmontado.
+      // O ideal é que o isLoading seja setado para false no useEffect do componente
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : 'Erro ao fazer login. Tente novamente mais tarde.';
+
+      setIsLoading(false);
+
+      toast.show({
+        title,
+        duration: 5000,
+        placement: 'top',
+        bg: 'red.500',
+      });
+    }
   }
 
   function handleNewAccount() {
@@ -123,6 +158,7 @@ export const SignIn = () => {
             mt={6}
             title="Acessar"
             onPress={handleSubmit(handleSignIn)}
+            isLoading={isLoading}
           />
         </Center>
 

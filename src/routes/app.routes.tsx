@@ -53,16 +53,11 @@ export const AppRoutes = () => {
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (
-            <HomeSvg width={iconSize} height={iconSize} fill={color} />
-          ),
-        }}
-      />
-      <Screen
-        name="profile"
-        component={Profile}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <ProfileSvg width={iconSize} height={iconSize} fill={color} />
+            <HomeSvg
+              width={iconSize}
+              height={iconSize}
+              fill={color}
+            />
           ),
         }}
       />
@@ -71,7 +66,24 @@ export const AppRoutes = () => {
         component={History}
         options={{
           tabBarIcon: ({ color }) => (
-            <HistorySvg width={iconSize} height={iconSize} fill={color} />
+            <HistorySvg
+              width={iconSize}
+              height={iconSize}
+              fill={color}
+            />
+          ),
+        }}
+      />
+      <Screen
+        name="profile"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <ProfileSvg
+              width={iconSize}
+              height={iconSize}
+              fill={color}
+            />
           ),
         }}
       />
