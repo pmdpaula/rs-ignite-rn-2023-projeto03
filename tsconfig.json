@@ -17,7 +17,8 @@
       "@constants/*": ["./src/constants/*"],
       "@styles/*": ["./src/styles/*"],
       "@storage/*": ["./src/storage/*"],
-      "@routes/*": ["./src/routes/*"]
+      "@routes/*": ["./src/routes/*"],
+      "@services/*": ["./src/services/*"]
     }
   }
 }

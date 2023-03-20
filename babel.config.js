@@ -22,6 +22,7 @@ module.exports = function (api) {
           '@constants': './src/constants',
           '@styles': './src/styles',
           '@storage': './src/storage',
+          '@services': './src/services',
         }
       }]
     ],

@@ -1,8 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigation } from '@react-navigation/native';
-import { Center, Heading, Image, ScrollView, Text, VStack } from 'native-base';
+import api from '@services/api';
+import { AppError } from '@utils/AppError';
+import { isAxiosError } from 'axios';
+import {
+  Center,
+  Heading,
+  Image,
+  ScrollView,
+  Text,
+  VStack,
+  useToast,
+} from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+
+import { Alert } from 'react-native';
 
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
@@ -41,12 +54,29 @@ export const SignUp = () => {
   });
 
   const { goBack } = useNavigation();
+  const toast = useToast();
 
-  function handleSignUp(formData: FormDataProps) {
-    console.log(
-      '🚀 ~ file: SignUp.tsx:23 ~ handleSignUp ~ formData:',
-      formData,
-    );
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    try {
+      const response = await api.post('/users', { name, email, password });
+      console.log(
+        '🚀 ~ file: SignUp.tsx:59 ~ handleSignUp ~ response:',
+        response.data,
+      );
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = !isAppError
+        ? error.message
+        : 'Não foi possível criar a conta. Tente novamente mais tarde.';
+
+      toast.show({
+        title,
+        duration: 5000,
+        placement: 'top',
+        bg: 'red.500',
+      });
+      // }
+    }
   }
 
   return (

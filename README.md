@@ -148,6 +148,11 @@ npx expo install expo-file-system
 yarn add react-hook-form
 ```
 
+[Requisições com o backend - Axios](https://axios-http.com/ptbr/docs/intro)
+```bash
+yarn add axios
+```
+
 
 
 
