@@ -5,7 +5,7 @@ type GroupProps = IPressableProps & {
   isActive: boolean;
 };
 
-export type GroupTypesProps = 'costa' | 'ombro' | 'bícipes' | 'tríceps';
+// export type GroupTypesProps = 'costa' | 'ombro' | 'bícipes' | 'tríceps';
 
 export const Group = ({ name, isActive, ...rest }: GroupProps) => {
   return (

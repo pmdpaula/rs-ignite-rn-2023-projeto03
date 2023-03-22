@@ -1,3 +1,4 @@
+import { ExerciseDTO } from '@dtos/ExerciseDTO';
 import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
@@ -18,7 +19,7 @@ import ProfileSvg from '@assets/profile.svg';
 
 type AppRoutesProps = {
   home: undefined;
-  exercise: undefined;
+  exercise: { exercise: ExerciseDTO };
   profile: undefined;
   history: undefined;
 };

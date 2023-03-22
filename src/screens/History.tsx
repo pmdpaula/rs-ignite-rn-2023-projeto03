@@ -1,69 +1,120 @@
-import { Heading, SectionList, Text, VStack } from 'native-base';
+import { HistoryDTO } from '@dtos/HistoryDTO';
+import { useFocusEffect } from '@react-navigation/native';
+import api from '@services/api';
+import { AppError } from '@utils/AppError';
+import { Heading, SectionList, Text, VStack, useToast } from 'native-base';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { HistoryCard } from '@components/HistoryCard';
+import { Loading } from '@components/Loading';
 import { ScreenHeader } from '@components/ScreenHeader';
 
-const exercisesList = [
-  {
-    title: '26.08.2022',
-    data: ['Puxada fronal', 'Remada unilateral'],
-  },
-  {
-    title: '27.08.2022',
-    data: ['Puxada fronal', 'Remada curvada', 'Remada unilateral'],
-  },
-  {
-    title: '28.08.2022',
-    data: ['Remada alta', 'Levantamento terra', 'Puxada traseira'],
-  },
-  {
-    title: '30.08.2022',
-    data: ['Puxada baixa', 'Puxada alta'],
-  },
-] as const;
+export type HistorySectionsProps = { title: string; data: HistoryDTO[] };
 
 export const History = () => {
-  const [exercises, setExercises] = useState<typeof exercisesList | []>(
-    exercisesList,
+  const [isLoading, setIsLoading] = useState(false);
+  const [exercises, setExercises] = useState<HistorySectionsProps[]>([]);
+
+  const toast = useToast();
+
+  async function fetchHistory() {
+    setIsLoading(true);
+
+    try {
+      const { data } = await api.get('/history');
+
+      setExercises(data);
+      // setRefactoredExercises(refactorHistoryList(data));
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível carregar o histórico.';
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.700',
+        duration: 3000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // function refactorHistoryList(rowData: ExerciseDTO[]): HistorySectionsProps[] {
+  //   const refactoredData = [] as HistorySectionsProps[];
+
+  //   rowData.forEach((histItem) => {
+  //     const date = histItem.updated_at.split('T')[0];
+
+  //     const isTitleSectionExists = refactoredData.find(
+  //       (item) => item.title === date,
+  //     );
+
+  //     if (!isTitleSectionExists) {
+  //       const newItem = {
+  //         title: date,
+  //         data: [histItem],
+  //       };
+
+  //       refactoredData.push(newItem);
+  //     } else {
+  //       const index = refactoredData.findIndex((item) => item.title === date);
+
+  //       refactoredData[index].data.push(histItem);
+  //     }
+  //   });
+
+  //   return refactoredData;
+  // }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchHistory();
+    }, []),
   );
 
   return (
     <VStack flex={1}>
       <ScreenHeader title="Histórico de exercícios" />
 
-      <SectionList
-        sections={exercises}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <HistoryCard title={item} />}
-        renderSectionHeader={({ section: { title } }) => (
-          <Heading
-            color="gray.200"
-            fontFamily="heading"
-            fontSize="md"
-            // fontWeight="bold"
-            mt={10}
-            mb={3}
-          >
-            {title}
-          </Heading>
-        )}
-        px={8}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={() => (
-          <Text
-            color="gray.100"
-            textAlign="center"
-            fontSize="md"
-          >
-            Nenhum exercício realizado.{'\n'}Vamos começar?
-          </Text>
-        )}
-        contentContainerStyle={
-          exercises.length === 0 && { flex: 1, justifyContent: 'center' }
-        }
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <SectionList
+          sections={exercises}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <HistoryCard data={item} />}
+          renderSectionHeader={({ section: { title } }) => (
+            <Heading
+              color="gray.200"
+              fontFamily="heading"
+              fontSize="md"
+              // fontWeight="bold"
+              mt={10}
+              mb={3}
+            >
+              {title}
+            </Heading>
+          )}
+          px={8}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => (
+            <Text
+              color="gray.100"
+              textAlign="center"
+              fontSize="md"
+            >
+              Nenhum exercício realizado.{'\n'}Vamos começar?
+            </Text>
+          )}
+          contentContainerStyle={
+            exercises.length === 0 && { flex: 1, justifyContent: 'center' }
+          }
+        />
+      )}
     </VStack>
   );
 };

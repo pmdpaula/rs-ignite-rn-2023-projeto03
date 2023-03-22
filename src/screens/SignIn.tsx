@@ -15,7 +15,7 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
@@ -56,9 +56,9 @@ export const SignIn = () => {
   const toast = useToast();
 
   async function handleSignIn({ email, password }: FormDataProps) {
-    setIsLoading(true);
-
     try {
+      setIsLoading(true);
+
       await signIn(email, password);
       // Não setams o isLoading para false quando a requisição dá certo, pq ao fazer isto,
       // podemos receber um erro de que o componente já foi desmontado.
@@ -69,11 +69,9 @@ export const SignIn = () => {
         ? error.message
         : 'Erro ao fazer login. Tente novamente mais tarde.';
 
-      setIsLoading(false);
-
       toast.show({
         title,
-        duration: 5000,
+        // duration: 5000,
         placement: 'top',
         bg: 'red.500',
       });
@@ -83,6 +81,10 @@ export const SignIn = () => {
   function handleNewAccount() {
     navigate('signUp');
   }
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   return (
     <ScrollView
