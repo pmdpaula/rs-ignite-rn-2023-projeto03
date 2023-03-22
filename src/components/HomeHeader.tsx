@@ -1,5 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@hooks/useAuth';
+import api from '@services/api';
 import { HStack, Heading, Icon, Text, VStack } from 'native-base';
 
 import { TouchableOpacity } from 'react-native';
@@ -20,7 +21,11 @@ export const HomeHeader = () => {
       alignItems="center"
     >
       <UserPhoto
-        source={user.avatar ? { uri: user.avatar } : defaulUserPhotoImg}
+        source={
+          user.avatar
+            ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
+            : defaulUserPhotoImg
+        }
         alt="imagem do usuário"
         size={16}
         mr={4}
