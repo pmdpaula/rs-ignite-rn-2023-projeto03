@@ -1,6 +1,9 @@
+import { ExerciseDTO } from '@dtos/ExerciseDTO';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
+import api from '@services/api';
+import { AppError } from '@utils/AppError';
 import {
   Box,
   HStack,
@@ -10,7 +13,10 @@ import {
   ScrollView,
   Text,
   VStack,
+  useToast,
 } from 'native-base';
+
+import { useState } from 'react';
 
 import { TouchableOpacity } from 'react-native';
 
@@ -20,8 +26,51 @@ import BodySvg from '@assets/body.svg';
 import RepetitionsSvg from '@assets/repetitions.svg';
 import SeriesSvg from '@assets/series.svg';
 
+type RouteParamsProps = {
+  exercise: ExerciseDTO;
+};
+
 export const Exercise = () => {
+  const [sendingRegister, setSendingRegister] = useState(false);
+
   const { goBack } = useNavigation<AppNavigatorRoutesProps>();
+  const route = useRoute();
+  const { exercise } = route.params as RouteParamsProps;
+  const toast = useToast();
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+
+  async function handleExerciseHistoryRegister() {
+    setSendingRegister(true);
+
+    try {
+      await api.post('/history', {
+        exercise_id: exercise.id,
+      });
+
+      toast.show({
+        title: 'Exercício registrado com sucesso!',
+        placement: 'top',
+        bgColor: 'green.700',
+        duration: 3000,
+      });
+
+      navigate('history');
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível registrar o exercício.';
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500',
+        duration: 3000,
+      });
+    } finally {
+      setSendingRegister(false);
+    }
+  }
 
   return (
     <VStack flex={1}>
@@ -51,7 +100,7 @@ export const Exercise = () => {
             fontSize="lg"
             flexShrink={1}
           >
-            Puxada Frontal
+            {exercise.name}
           </Heading>
 
           <HStack alignItems="center">
@@ -62,7 +111,7 @@ export const Exercise = () => {
               ml={1}
               textTransform="capitalize"
             >
-              Costas
+              {exercise.group}
             </Text>
           </HStack>
         </HStack>
@@ -70,17 +119,21 @@ export const Exercise = () => {
 
       <ScrollView showsHorizontalScrollIndicator={false}>
         <VStack p={8}>
-          <Image
-            source={{
-              uri: 'https://conteudo.imguol.com.br/c/entretenimento/0c/2019/12/03/remada-unilateral-com-halteres-1575402100538_v2_600x600.jpg',
-            }}
-            w="full"
-            h={80}
-            alt="nome do exercício"
+          <Box
             rounded="lg"
             mb={3}
-            resizeMode="cover"
-          />
+            overflow="hidden"
+          >
+            <Image
+              source={{
+                uri: `${api.defaults.baseURL}/exercise/demo/${exercise.demo}`,
+              }}
+              w="full"
+              h={80}
+              alt="nome do exercício"
+              resizeMode="cover"
+            />
+          </Box>
 
           <Box
             bg="gray.600"
@@ -100,7 +153,7 @@ export const Exercise = () => {
                   color="gray.200"
                   ml={2}
                 >
-                  3 séries
+                  {exercise.series} séries
                 </Text>
               </HStack>
 
@@ -110,12 +163,16 @@ export const Exercise = () => {
                   color="gray.200"
                   ml={2}
                 >
-                  12 repetições
+                  {exercise.repetitions} repetições
                 </Text>
               </HStack>
             </HStack>
 
-            <Button title="Marcar como realizado" />
+            <Button
+              title="Marcar como realizado"
+              isLoading={sendingRegister}
+              onPress={handleExerciseHistoryRegister}
+            />
           </Box>
         </VStack>
       </ScrollView>

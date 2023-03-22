@@ -1,10 +1,9 @@
+import { AuthContextProvider } from '@contexts/AuthContext';
 import {
   Roboto_400Regular,
   Roboto_700Bold,
   useFonts,
 } from '@expo-google-fonts/roboto';
-import { AppRoutes } from '@routes/app.routes';
-// import { StatusBar } from 'expo-status-bar';
 import { NativeBaseProvider, StatusBar } from 'native-base';
 
 import { Loading } from '@components/Loading';
@@ -25,7 +24,9 @@ export default function App() {
         translucent
         barStyle="light-content"
       />
-      {fontsLoaded ? <Routes /> : <Loading />}
+      <AuthContextProvider>
+        {fontsLoaded ? <Routes /> : <Loading />}
+      </AuthContextProvider>
     </NativeBaseProvider>
   );
 }

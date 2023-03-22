@@ -1,8 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAuth } from '@hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
-import { Center, Heading, Image, ScrollView, Text, VStack } from 'native-base';
+import api from '@services/api';
+import { AppError } from '@utils/AppError';
+import {
+  Center,
+  Heading,
+  Image,
+  ScrollView,
+  Text,
+  VStack,
+  useToast,
+} from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+
+import { useState } from 'react';
 
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
@@ -32,6 +45,8 @@ const signUpSchema = yup
 type FormDataProps = yup.InferType<typeof signUpSchema>;
 
 export const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -41,12 +56,29 @@ export const SignUp = () => {
   });
 
   const { goBack } = useNavigation();
+  const toast = useToast();
+  const { signIn } = useAuth();
 
-  function handleSignUp(formData: FormDataProps) {
-    console.log(
-      '🚀 ~ file: SignUp.tsx:23 ~ handleSignUp ~ formData:',
-      formData,
-    );
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    setIsLoading(true);
+
+    try {
+      await api.post('/users', { name, email, password });
+      await signIn(email, password);
+    } catch (error) {
+      setIsLoading(false);
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível criar a conta. Tente novamente mais tarde.';
+
+      toast.show({
+        title,
+        duration: 5000,
+        placement: 'top',
+        bg: 'red.500',
+      });
+    }
   }
 
   return (
@@ -149,6 +181,7 @@ export const SignUp = () => {
           <Button
             title="Criar e acessar"
             onPress={handleSubmit(handleSignUp)}
+            isLoading={isLoading}
           />
         </Center>
 

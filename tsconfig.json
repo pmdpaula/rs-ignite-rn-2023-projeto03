@@ -10,14 +10,15 @@
       "@hooks/*": ["./src/hooks/*"],
       "@assets/*": ["./src/assets/*"],
       "@types/*": ["./src/@types/*"],
-      "@dtos/*": ["./src/@dtos/*"],
+      "@dtos/*": ["./src/dtos/*"],
       "@navigation/*": ["./src/navigation/*"],
-      "@context/*": ["./src/context/*"],
+      "@contexts/*": ["src/contexts/*"],
       "@config/*": ["./src/config/*"],
       "@constants/*": ["./src/constants/*"],
       "@styles/*": ["./src/styles/*"],
       "@storage/*": ["./src/storage/*"],
-      "@routes/*": ["./src/routes/*"]
+      "@routes/*": ["./src/routes/*"],
+      "@services/*": ["./src/services/*"]
     }
   }
 }

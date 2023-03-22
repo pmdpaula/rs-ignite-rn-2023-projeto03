@@ -15,13 +15,14 @@ module.exports = function (api) {
           '@utils': './src/utils',
           '@hooks': './src/hooks',
           '@types': './src/@types',
-          '@dtos': './src/@dtos',
+          '@dtos': './src/dtos',
           '@navigation': './src/navigation',
-          '@context': './src/context',
+          '@contexts': './src/contexts',
           '@config': './src/config',
           '@constants': './src/constants',
           '@styles': './src/styles',
           '@storage': './src/storage',
+          '@services': './src/services',
         }
       }]
     ],

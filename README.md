@@ -148,10 +148,24 @@ npx expo install expo-file-system
 yarn add react-hook-form
 ```
 
+[Requisições com o backend - Axios](https://axios-http.com/ptbr/docs/intro)
+```bash
+yarn add axios
+```
+
+[Armazenamento de dados no dispositivo - AsyncStorage](https://docs.expo.dev/versions/latest/sdk/async-storage/)
+```bash
+npx expo install @react-native-async-storage/async-storage
+```
+
+Usaremos o AsyncStorage para persistir dados do usuário retornados do backend.
 
 
 
 
+
+
+---------------------- Bibliotecas não utilizadas ainda ----------------------
 
 
 
@@ -177,10 +191,6 @@ yarn add date-fns
 yarn add react-native-uuid
 ```
 
-[Armazenamento de dados no dispositivo - AsyncStorage](https://docs.expo.dev/versions/latest/sdk/async-storage/)
-```bash
-npx expo install @react-native-async-storage/async-storage
-```
 
 ~[Seleção nos campos de data e hora - datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)~
 ```bash
