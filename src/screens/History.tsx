@@ -28,9 +28,7 @@ export const History = () => {
       // setRefactoredExercises(refactorHistoryList(data));
     } catch (error) {
       const isAppError = error instanceof AppError;
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível carregar o histórico.';
+      const title = isAppError ? error.message : 'Não foi possível carregar o histórico.';
 
       toast.show({
         title,
@@ -92,7 +90,6 @@ export const History = () => {
               color="gray.200"
               fontFamily="heading"
               fontSize="md"
-              // fontWeight="bold"
               mt={10}
               mb={3}
             >

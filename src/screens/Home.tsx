@@ -101,7 +101,6 @@ export const Home = () => {
         minH={10}
         maxH={10}
       />
-
       {isLoading ? (
         <Loading />
       ) : (
