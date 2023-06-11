@@ -162,46 +162,6 @@ Usaremos o AsyncStorage para persistir dados do usuário retornados do backend.
 
 
 
-
-
-
----------------------- Bibliotecas não utilizadas ainda ----------------------
-
-
-
-- [Phosphor Icons - biblioteca de ícones - phosphor-react-native](https://phosphoricons.com/)
-```bash
-yarn add phosphor-react-native
-npx expo install react-native-svg
-```
-
-
-[Manter a SplashScreen até leitura das fontes - expo-splash-screen](https://docs.expo.dev/versions/latest/sdk/splash-screen/)
-```bash
-npx expo install expo-splash-screen
-```
-
-[Manipulação de data - date-fns](https://date-fns.org/docs/Getting-Started#installation)
-```bash
-yarn add date-fns
-```
-
-[Geração de hash para IDs - react-native-uuid](https://github.com/eugenehp/react-native-uuid)
-```bash
-yarn add react-native-uuid
-```
-
-
-~[Seleção nos campos de data e hora - datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)~
-```bash
-expo install @react-native-community/datetimepicker
-```
-
-[Seleção nos campos de data e hora - React Native Date Picker](https://github.com/henninghall/react-native-date-picker)
-```bash
-yarn add react-native-date-picker
-```
-
 ## Configurações do projeto
 
 ### Path mapping
@@ -263,3 +223,154 @@ No arquivo `tsconfig.json` foi adicionado as seguintes linhas:
       "@locales/*": ["./src/locales/*"],
     }
 ```
+
+
+
+## Variáveis de ambiente
+
+Estenderei esta como parte do desafio 04, onde será implantado as notificações e deep linking.
+
+Colocarei variáveis de ambiente para que possamos usar a chave do OneSignal secretamente.
+
+**[Uso de variáveis de Ambiente - react-native-dotenv](https://github.com/goatandsheep/react-native-dotenv)**
+```bash
+yarn add -D react-native-dotenv
+```
+
+Aqui ainda foi adicionado o seguinte plugins (com as configurações) no arquivo `babel.config.js`
+```javascript
+plugins: [
+      ["module:react-native-dotenv", {
+        "moduleName": "@env",
+        "path": ".env",
+        "blocklist": null,
+        "allowlist": null,
+        "safe": false,
+        "allowUndefined": true
+      }]
+    ],
+```
+
+***Para typescript***
+Crie um diretório `./src/@types` e um arquivo `env.d.tsx` e adicione as seguintes linhas:
+
+```javasctipt
+declare module '@env' {
+  export const API_BASE: string;
+}
+```
+
+E em `tsconfig.json`
+```javascript
+"typeRoots": ["./src/@types"]
+```
+
+
+
+## Notificações
+
+**[Controle dos Push Notifications - OneSignal](https://documentation.onesignal.com/docs/react-native-expo-sdk-setup)**
+```bash
+npx expo install onesignal-expo-plugin
+yarn add react-native-onesignal@4.5.1
+```
+Foi usada a versão 4.5.1 expecificamente para não pegar uma versão beta mais nova.
+Ainda é preciso adicionar a seguinte configuração no arquivo `app.json`. Atentar aos colchetes, pois a instalação acima já inclui a linha `"onesignal-expo-plugin"`. O que devemos fazer é incluir exatamente como segue:
+
+```json
+{
+  "plugins": [
+    [
+      "onesignal-expo-plugin",
+      {
+        "mode": "development",
+      }
+    ]
+  ]
+}
+```
+Quando não fiz como está acima, recebi o seguinte erro.
+<pre style="color: red; font-weight: 600">CommandError: Cannot read properties of undefined (reading 'smallIcons')</pre>
+
+
+E a ativação do OneSignal do projeto. Arquivo `App.tsx`
+```javascript
+import OneSignal from 'react-native-onesignal';
+import Constants from "expo-constants";
+...
+OneSignal.setAppId("YOUR-ONESIGNAL-APP-ID");
+```
+
+## Mudando de Managed Workflow para Development Build
+As compilações de desenvolvimento podem ser criadas com o EAS Build ou localmente em seu computador. Você precisará do Xcode (iOS) ou do Android Studio (Android) para instalar o seu App diretamente no emulador ou dispositivo físico para continuar seu aplicativo.
+1. Para iniciar uma compilação de desenvolvimento, você precisará instalar o `expo-dev-client`
+```bash
+npx expo install expo-dev-client
+```
+
+Quando você precisar personalizar seu projeto além das APIS padrão fornecidas no Expo Go, poderá criar um cliente de desenvolvimento personalizado para seu aplicativo, instalá-lo no dispositivo e continuar desenvolvendo.
+
+Corrigir o seguinte erro:
+<pre style="color: red; font-weight: 600">`AssertionError [ERR_ASSERTION]: Missing 'ios.bundleIdentifier' in app config.`</pre>
+No arquivo `app.json` adicionar a linha com a seta.
+
+```json
+"ios": {
+      "supportsTablet": true,
+▶️      "bundleIdentifier": "com.axesoft.igniteshoesapp"
+    },
+```
+
+2. Voltando aos passos do OneSignal (https://documentation.onesignal.com/docs/react-native-expo-sdk-setup).
+```bash
+npx expo prebuild
+```
+
+Reforçar a importância de termos nosso ambiente nativo configurado na máquina para evitar que nossa aplicação tenha problemas no momento do build.
+
+Link da documentação: https://react-native.rocketseat.dev/
+
+3. Agora para executar pelo expo, precisamos compilar antes e instalar no dispositivo.
+```bash
+npx expo run:android
+```
+
+4. Alterar no `package.json` o script `dev` para: `"start": "expo start --dev-client",`
+
+---------------------- Bibliotecas não utilizadas ----------------------
+
+
+
+- [Phosphor Icons - biblioteca de ícones - phosphor-react-native](https://phosphoricons.com/)
+```bash
+yarn add phosphor-react-native
+npx expo install react-native-svg
+```
+
+
+[Manter a SplashScreen até leitura das fontes - expo-splash-screen](https://docs.expo.dev/versions/latest/sdk/splash-screen/)
+```bash
+npx expo install expo-splash-screen
+```
+
+[Manipulação de data - date-fns](https://date-fns.org/docs/Getting-Started#installation)
+```bash
+yarn add date-fns
+```
+
+[Geração de hash para IDs - react-native-uuid](https://github.com/eugenehp/react-native-uuid)
+```bash
+yarn add react-native-uuid
+```
+
+
+~[Seleção nos campos de data e hora - datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)~
+```bash
+expo install @react-native-community/datetimepicker
+```
+
+[Seleção nos campos de data e hora - React Native Date Picker](https://github.com/henninghall/react-native-date-picker)
+```bash
+yarn add react-native-date-picker
+```
+

@@ -11,7 +11,6 @@ import { UserPhoto } from './UserPhoto';
 
 export const HomeHeader = () => {
   const { user, signOut } = useAuth();
-  console.log('🚀 ~ file: HomeHeader.tsx:14 ~ HomeHeader ~ user:', user);
 
   return (
     <HStack

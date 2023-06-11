@@ -1,4 +1,5 @@
-import { HistoryDTO } from '@dtos/HistoryDTO';
+import { HistoryDTO, HistoryWithTitleDTO } from '@dtos/HistoryDTO';
+import { tagLastWeekExercicesUpdate } from '@notifications/notificationsTags';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '@services/api';
 import { AppError } from '@utils/AppError';
@@ -23,6 +24,36 @@ export const History = () => {
 
     try {
       const { data } = await api.get('/history');
+
+      const isSunday = (date: Date) => date.getDay() === 4;
+      const today = new Date();
+
+      console.log('🚀 ~ file: History.tsx:30 ~ fetchHistory ~ today:', isSunday(today));
+
+      if (isSunday(today)) {
+        // Se for domingo contar a quantidade de exercícios realizados na semana
+        // e enviar uma notificação para o usuário com a quantidade de exercícios
+        // realizados na semana.
+        const minDate = new Date();
+        minDate.setDate(today.getDate() - 7);
+
+        const weekExercises = data.filter((item: HistoryWithTitleDTO) => {
+          const day = item.title.split('.')[0];
+          const month = item.title.split('.')[1];
+          const year = item.title.split('.')[2];
+          const itemDate = new Date(`${year}-${month}-${day}`);
+
+          return itemDate >= minDate && itemDate <= today;
+        });
+
+        const initialValue = 0;
+        const weekExercisesCount = weekExercises.reduce(
+          (acc: number, curr: HistoryWithTitleDTO) => acc + curr.data.length,
+          initialValue,
+        );
+
+        tagLastWeekExercicesUpdate(weekExercisesCount.toString());
+      }
 
       setExercises(data);
       // setRefactoredExercises(refactorHistoryList(data));

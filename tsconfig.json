@@ -18,7 +18,9 @@
       "@styles/*": ["./src/styles/*"],
       "@storage/*": ["./src/storage/*"],
       "@routes/*": ["./src/routes/*"],
-      "@services/*": ["./src/services/*"]
+      "@services/*": ["./src/services/*"],
+      "@notifications/*": ["./src/notifications/*"]
     }
-  }
+  },
+  "typeRoots": ["./src/@types"]
 }

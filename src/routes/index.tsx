@@ -1,4 +1,5 @@
 import { useAuth } from '@hooks/useAuth';
+import { tagUserInfoCreate } from '@notifications/notificationsTags';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { Box, useTheme } from 'native-base';
 
@@ -13,6 +14,8 @@ export const Routes = () => {
 
   const theme = DefaultTheme;
   theme.colors.background = colors.gray[700];
+
+  tagUserInfoCreate();
 
   if (isLoadingUserStorageData) {
     return <Loading />;
