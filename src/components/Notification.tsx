@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-// import * as Linking from 'expo-linking';
+import * as Linking from 'expo-linking';
 import { CloseIcon, HStack, Icon, IconButton, Pressable, Text } from 'native-base';
 import { OSNotification } from 'react-native-onesignal';
 
@@ -8,17 +8,17 @@ type Props = {
   onClose: () => void;
 };
 
-type AdditionalDataProps = {
-  route?: string;
-  product_id?: string;
-};
+// type AdditionalDataProps = {
+//   route?: string;
+//   product_id?: string;
+// };
 
 export function Notification({ data, onClose }: Props) {
   function handleOnPress() {
-    // if (data.launchURL) {
-    //   Linking.openURL(data.launchURL);
-    //   onClose();
-    // }
+    if (data.launchURL) {
+      Linking.openURL(data.launchURL);
+      onClose();
+    }
   }
 
   return (

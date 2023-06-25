@@ -337,40 +337,42 @@ npx expo run:android
 
 4. Alterar no `package.json` o script `dev` para: `"start": "expo start --dev-client",`
 
----------------------- Bibliotecas não utilizadas ----------------------
 
+## Acrecentando o Deep Linking
 
+[Configurações para o Deep Linking - React Navigation](https://reactnavigation.org/docs/deep-linking/)
 
-- [Phosphor Icons - biblioteca de ícones - phosphor-react-native](https://phosphoricons.com/)
-```bash
-yarn add phosphor-react-native
-npx expo install react-native-svg
+Adicionar a seguinte linha no arquivo `app.json`
+```
+"scheme": "ignitegymapp",
 ```
 
-
-[Manter a SplashScreen até leitura das fontes - expo-splash-screen](https://docs.expo.dev/versions/latest/sdk/splash-screen/)
+Confirmado a configuração
 ```bash
-npx expo install expo-splash-screen
+npx expo prebuild
+
+npx uri-scheme list
+```
+Saída:
+```bash
+ › Android: Schemes for config: ./android\app\src\main\AndroidManifest.xml
+ › com.axesoft.ignitegymapp://
+ › exp+ignitegym://
+ › ignitegymapp://
 ```
 
-[Manipulação de data - date-fns](https://date-fns.org/docs/Getting-Started#installation)
+Recria a aplicação no emulador
 ```bash
-yarn add date-fns
+npx expo run:android
 ```
 
-[Geração de hash para IDs - react-native-uuid](https://github.com/eugenehp/react-native-uuid)
-```bash
-yarn add react-native-uuid
+Em abiente de desenvolvimento enviamos o deep link com o IP do servidor onde está rodando o emulador. O comando abaixo é para testar o deep linking
 ```
-
-
-~[Seleção nos campos de data e hora - datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)~
-```bash
-expo install @react-native-community/datetimepicker
+npx uri-scheme open ignitegymapp://192.168.68.101:8081 --android
 ```
+Usamos um dos schemas listados no comando `npx uri-scheme list`.
 
-[Seleção nos campos de data e hora - React Native Date Picker](https://github.com/henninghall/react-native-date-picker)
+Instalação do expo-linking
 ```bash
-yarn add react-native-date-picker
+npx expo install expo-linking
 ```
-
