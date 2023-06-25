@@ -7,3 +7,8 @@ export type HistoryDTO = {
   exercise_id: string;
   user_id: string;
 };
+
+export type HistoryWithTitleDTO = {
+  title: string;
+  data: HistoryDTO[];
+};

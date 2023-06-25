@@ -22,7 +22,8 @@ export const Home = () => {
   const toast = useToast();
 
   function handleOpenExerciseDetails(data: ExerciseDTO) {
-    navigate('exercise', { exercise: data });
+    navigate('exercise2', { exerciseId: data.id });
+    // navigate('exercise', { exercise: data });
   }
 
   async function fetchGroups() {

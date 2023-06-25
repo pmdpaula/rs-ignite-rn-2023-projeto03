@@ -23,7 +23,16 @@ module.exports = function (api) {
           '@styles': './src/styles',
           '@storage': './src/storage',
           '@services': './src/services',
+          '@notifications': './src/notifications',
         }
+      }],
+      ["module:react-native-dotenv", {
+        "moduleName": "@env",
+        "path": ".env",
+        "blocklist": null,
+        "allowlist": null,
+        "safe": false,
+        "allowUndefined": true
       }]
     ],
   };
