@@ -28,8 +28,6 @@ export const History = () => {
       const isSunday = (date: Date) => date.getDay() === 4;
       const today = new Date();
 
-      console.log('🚀 ~ file: History.tsx:30 ~ fetchHistory ~ today:', isSunday(today));
-
       if (isSunday(today)) {
         // Se for domingo contar a quantidade de exercícios realizados na semana
         // e enviar uma notificação para o usuário com a quantidade de exercícios
